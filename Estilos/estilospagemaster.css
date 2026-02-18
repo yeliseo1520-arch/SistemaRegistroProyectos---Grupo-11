@@ -1,0 +1,42 @@
+﻿/* Color Turquesa de PROMETEO */
+:root {
+    --prometeo-turquesa: #5bc0be; /* Ajuste basado en tu imagen de login */
+    --prometeo-dark: #333;
+}
+
+/* Menú de navegación personalizado */
+.custom-nav {
+    background-color: var(--prometeo-turquesa) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+ 
+}
+
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Estilo para los botones en todas las interfaces */
+.btn-primary, .btn-prometeo {
+    background-color: var(--prometeo-turquesa) !important;
+    border-color: var(--prometeo-turquesa) !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+    .btn-prometeo:hover {
+        filter: brightness(90%);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+/* Contenedores de las interfaces */
+.body-content {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 15px;
+    margin-top: 20px;
+    min-height: 80vh;
+}
+

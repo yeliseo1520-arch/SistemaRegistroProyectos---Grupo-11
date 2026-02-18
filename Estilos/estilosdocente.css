@@ -1,0 +1,24 @@
+﻿/* Forzar el tamaño de la ventana modal solicitado */
+#modalDetalle .modal-content {
+    width: 800px;
+    height: 800px;
+    border-radius: 15px;
+    border: none;
+}
+
+/* Encabezado de la tabla con el turquesa de PROMETEO */
+.table-turquesa {
+    background-color: #5bc0be !important;
+}
+
+.btn-prometeo {
+    background-color: #5bc0be !important;
+    color: white !important;
+    border: none;
+    transition: 0.3s;
+}
+
+    .btn-prometeo:hover {
+        background-color: #48a8a6 !important;
+        transform: translateY(-1px);
+    }

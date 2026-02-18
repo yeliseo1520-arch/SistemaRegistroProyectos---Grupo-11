@@ -1,0 +1,20 @@
+﻿.text-prometeo {
+    color: #5bc0be; /* El mismo turquesa del login */
+    font-weight: bold;
+}
+
+.table-turquesa {
+    background-color: #5bc0be !important;
+}
+
+.form-label {
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.badge {
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+
