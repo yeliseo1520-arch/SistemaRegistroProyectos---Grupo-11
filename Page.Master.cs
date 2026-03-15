@@ -11,7 +11,14 @@ namespace SistemaRegistroProyectos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                // Si el usuario está logueado y es Administrador, mostramos la pestaña
+                if (Session["Rol"] != null && Session["Rol"].ToString() == "Administrador")
+                {
+                    lnkAdmin.Visible = true;
+                }
+            }
         }
     }
 }
