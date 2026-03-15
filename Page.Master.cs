@@ -11,7 +11,16 @@ namespace SistemaRegistroProyectos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // esto es para mantenerr el menú consistente con el rol del usuario.
 
+            if (Session["Rol"] != null && Session["Rol"].ToString() == "Administrador")
+            {
+                lnkAdmin.Visible = true;
+            }
+            else
+            {
+                lnkAdmin.Visible = false;
+            }
         }
     }
 }

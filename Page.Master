@@ -53,6 +53,7 @@
                 <li class="nav-item"><a class="nav-link" runat="server" href="Docente.aspx">Docente</a></li>
                 <li class="nav-item"><a class="nav-link" runat="server" href="Estudiante.aspx">Estudiante</a></li>
                 <li class="nav-item"><a class="nav-link" runat="server" href="Dashboard.aspx">Dashboard</a></li>
+                <li class="nav-item"><asp:HyperLink ID="lnkAdmin" runat="server" CssClass="nav-link" NavigateUrl="~/Admin.aspx" Visible="false">Admin</asp:HyperLink></li>
                 <li class="nav-item"><a class="nav-link" runat="server" href="Login.aspx">Login</a></li>
             </ul>
         </div>

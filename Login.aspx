@@ -28,15 +28,17 @@
 
             <div class="input-group">
                 <label>Tipo de Perfil</label>
-                <asp:DropDownList ID="ddlPerfil" runat="server">
-                    <asp:ListItem Value="0">Seleccione su perfil...</asp:ListItem>
-                    <asp:ListItem Value="1">Estudiante</asp:ListItem>
-                    <asp:ListItem Value="2">Docente</asp:ListItem>
-                    <asp:ListItem Value="2">Admin</asp:ListItem>
-                </asp:DropDownList>
+            <asp:DropDownList ID="ddlPerfil" runat="server">
+                <asp:ListItem Value="">Seleccione su perfil...</asp:ListItem>
+                <asp:ListItem Value="Estudiante">Estudiante</asp:ListItem>
+                <asp:ListItem Value="Docente">Docente</asp:ListItem>
+                <asp:ListItem Value="Administrador">Admin</asp:ListItem>
+            </asp:DropDownList>
             </div>
 
-            <asp:Button ID="btnLogin" runat="server" Text="Iniciar Sesión" CssClass="btn-login" />
+            <asp:Label ID="lblError" runat="server" ForeColor="Red" style="display:block; margin-bottom:10px; text-align:center; font-size:14px;"></asp:Label>
+
+            <asp:Button ID="btnLogin" runat="server" Text="Iniciar Sesión" CssClass="btn-login" OnClick="btnLogin_Click" />
 
             <div class="login-footer">
                 <a href="Docente.aspx">¿Olvidaste tu contraseña?</a>
