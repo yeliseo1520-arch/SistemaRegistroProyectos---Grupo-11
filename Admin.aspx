@@ -4,7 +4,6 @@
         <h2 class="text-center">Panel de Administración - PROMETEO</h2>
         <hr />
 
-        <!-- 1. FORMULARIO DE REGISTRO (Con Paneles Dinámicos) -->
         <div class="card shadow-sm p-4 mb-5 bg-white rounded">
             <h4><i class="fas fa-user-plus"></i> Registrar Nuevo Usuario</h4>
             <div class="row">
@@ -19,7 +18,7 @@
                 </div>
             </div>
 
-            <!-- Campos Comunes -->
+            
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <asp:TextBox ID="txtNombres" runat="server" CssClass="form-control" placeholder="Nombres"></asp:TextBox>
@@ -34,7 +33,7 @@
                 </div>
             </div>
 
-            <!-- PANEL DINÁMICO PARA ESTUDIANTES -->
+           
             <asp:Panel ID="pnlEstudiante" runat="server" Visible="false" CssClass="border p-3 mb-3 bg-light">
                 <h5>Datos de Estudiante</h5>
                 <div class="row">
@@ -47,7 +46,7 @@
                 </div>
             </asp:Panel>
 
-            <!-- PANEL DINÁMICO PARA DOCENTES -->
+           
             <asp:Panel ID="pnlDocente" runat="server" Visible="false" CssClass="border p-3 mb-3 bg-light">
                 <h5>Datos de Docente</h5>
                 <div class="row">
@@ -66,7 +65,7 @@
             </div>
         </div>
 
-        <!-- 2. FILTRO DE BÚSQUEDA (Requisito 6) -->
+        <!--  FILTRO DE BÚSQUEDA  -->
         <div class="row mb-3">
             <div class="col-md-9">
                 <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control shadow-sm" placeholder="Buscar por nombre o correo..."></asp:TextBox>
@@ -76,7 +75,7 @@
             </div>
         </div>
 
-        <!-- 3. GRIDVIEW DE GESTIÓN (CRUD) -->
+        <!--  GRIDVIEW DE GESTIÓN (CRUD) -->
         <div class="table-responsive">
             <asp:GridView ID="gvUsuarios" runat="server" CssClass="table table-striped table-hover shadow-sm" AutoGenerateColumns="False" DataKeyNames="UsuarioID" DataSourceID="dsUsuarios">
                 <Columns>
@@ -89,7 +88,7 @@
             </asp:GridView>
         </div>
 
-        <!-- SQL DATA SOURCE (El puente ADO.NET) -->
+        
         <asp:SqlDataSource ID="dsUsuarios" runat="server" 
             ConnectionString="<%$ ConnectionStrings:PrometeoConnectionString %>" 
             SelectCommand="SELECT [UsuarioID], [Nombres], [Correo], [Rol] FROM [Usuarios]"

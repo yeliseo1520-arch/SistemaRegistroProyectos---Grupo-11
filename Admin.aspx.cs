@@ -7,10 +7,27 @@ namespace SistemaRegistroProyectos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Seguridad: Aquí podrías validar si la sesión es de Admin
+            //  aqui hacemos esto por seguridad (Siempre se verifica)
+            if (Session["Rol"] == null || Session["Rol"].ToString() != "Administrador")
+            {
+                Response.Redirect("~/Login.aspx");
+                return;
+            }
+
+            //  cargamos los datos (Solo la primera vez)
+            if (!IsPostBack)
+            {
+                // Aqui vamos a mostrar quien inicio sesion.
+                lblStatus.Text = "Bienvenido al Centro de Control, " + Session["Usuario"].ToString();
+                lblStatus.ForeColor = System.Drawing.Color.Gray;
+
+                // Y ocultamos los paneles de estudiante y docente hasta que se seleccione un rol.
+                pnlEstudiante.Visible = false;
+                pnlDocente.Visible = false;
+            }
         }
 
-        // Lógica de Paneles Dinámicos (Requisito: El formulario debe adaptarse)
+        // aplicaciones de paneles dinamicos para que el formulario se adapte
         protected void ddlRol_SelectedIndexChanged(object sender, EventArgs e)
         {
             string rol = ddlRol.SelectedValue;
@@ -18,7 +35,7 @@ namespace SistemaRegistroProyectos
             pnlDocente.Visible = (rol == "Docente");
         }
 
-        // Acción de Guardar (ADO.NET Insert)
+        // Aqui aplicamos el guardado osea (ADO.NET Insert)
         protected void btnRegistrar_Click(object sender, EventArgs e)
         {
             try

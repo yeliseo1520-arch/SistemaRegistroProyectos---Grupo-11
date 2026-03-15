@@ -11,13 +11,15 @@ namespace SistemaRegistroProyectos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            // esto es para mantenerr el menú consistente con el rol del usuario.
+
+            if (Session["Rol"] != null && Session["Rol"].ToString() == "Administrador")
             {
-                // Si el usuario está logueado y es Administrador, mostramos la pestaña
-                if (Session["Rol"] != null && Session["Rol"].ToString() == "Administrador")
-                {
-                    lnkAdmin.Visible = true;
-                }
+                lnkAdmin.Visible = true;
+            }
+            else
+            {
+                lnkAdmin.Visible = false;
             }
         }
     }
