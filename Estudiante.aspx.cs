@@ -13,7 +13,7 @@ namespace SistemaRegistroProyectos
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["EstudianteID"] == null)
+            if (Session["UsuarioID"] == null)
             {
                 Response.Redirect("login.aspx");
                 return;
@@ -29,7 +29,7 @@ namespace SistemaRegistroProyectos
 
         protected void btnEnviar_Click(object sender, EventArgs e)
         {
-            int estudianteID = Convert.ToInt32(Session["EstudianteID"]);
+            int userID = Convert.ToInt32(Session["UsuarioID"]);
 
             int proyectoID = 0;
 
@@ -79,16 +79,16 @@ namespace SistemaRegistroProyectos
 
                     SqlCommand cmd = new SqlCommand(@"
             INSERT INTO Proyectos
-            (EstudianteID, NombreProyecto, TituloProyecto,
+            (UsuarioID, NombreProyecto, TituloProyecto,
              Descripcion, Objetivo,
              AreaID, Tipo, EstadoID)
             OUTPUT INSERTED.ProyectoID
             VALUES
-            (@EstudianteID, @Nombre, @Titulo,
+            (@UsuarioID, @Nombre, @Titulo,
              @Descripcion, @Objetivo,
              @Area, @Tipo, 1)", con);
 
-                    cmd.Parameters.AddWithValue("@EstudianteID", estudianteID);
+                    cmd.Parameters.AddWithValue("@UsuarioID", userID);
                     cmd.Parameters.AddWithValue("@Nombre", txtNombreProyecto.Text);
                     cmd.Parameters.AddWithValue("@Titulo", txtTituloProyecto.Text);
                     cmd.Parameters.AddWithValue("@Descripcion", txtDescripcion.Text);
@@ -150,7 +150,7 @@ namespace SistemaRegistroProyectos
 
         void CargarProyectos()
         {
-            int estudianteID = Convert.ToInt32(Session["EstudianteID"]);
+            int userID = Convert.ToInt32(Session["UsuarioID"]);
 
             using (SqlConnection con = new SqlConnection(conexion))
             {
@@ -168,10 +168,10 @@ namespace SistemaRegistroProyectos
                 INNER JOIN EstadosProyecto e ON p.EstadoID = e.EstadoID
                 LEFT JOIN Observaciones o ON p.ProyectoID = o.ProyectoID
                 LEFT JOIN DocumentosProyecto d ON p.ProyectoID = d.ProyectoID
-                    WHERE p.EstudianteID = @id
+                    WHERE p.UsuarioID = @id
                 ORDER BY p.FechaEnvio desc", con);
 
-                cmd.Parameters.AddWithValue("@id", estudianteID);
+                cmd.Parameters.AddWithValue("@id", userID);
 
                 SqlDataReader dr = cmd.ExecuteReader();
 
