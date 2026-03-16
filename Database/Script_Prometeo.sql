@@ -1,4 +1,4 @@
-﻿--  Creación Base de Datos (Grupo 11)
+--  Creación Base de Datos (Grupo 11)
 CREATE DATABASE SistemaPrometeo;
 GO
 
