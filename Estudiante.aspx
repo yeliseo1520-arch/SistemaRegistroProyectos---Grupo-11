@@ -77,21 +77,54 @@
         <div class="col-12">
             <h4 class="text-prometeo mb-3">Mis Proyectos Registrados</h4>
             <asp:GridView ID="gvProyectos"
-                runat="server"
-                CssClass="table table-hover shadow-sm"
-                AutoGenerateColumns="false">
-                <Columns>
-                    <asp:BoundField HeaderText="Proyecto"
-                        DataField="NombreProyecto" />
-                    <asp:BoundField HeaderText="Estad"
-                        DataField="NombreEstado" />
-                    <asp:BoundField HeaderText="Fecha"
-                        DataField="FechaEnvio"
-                        DataFormatString="{0:dd/MM/yyyy}" />
-                    <asp:BoundField HeaderText="Observación"
-                        DataField="Observacion" />
-                </Columns>
-            </asp:GridView>
+    runat="server"
+    CssClass="table table-hover shadow-sm"
+    AutoGenerateColumns="false"
+    OnRowCommand="gvProyectos_RowCommand">
+
+    <Columns>
+
+        <asp:BoundField HeaderText="Proyecto" DataField="NombreProyecto" />
+        <asp:BoundField HeaderText="Estado" DataField="NombreEstado" />
+        <asp:BoundField HeaderText="Fecha" DataField="FechaEnvio"
+            DataFormatString="{0:dd/MM/yyyy}" />
+        <asp:BoundField HeaderText="Observación" DataField="Observacion" />
+
+        <asp:TemplateField HeaderText="Archivo">
+            <ItemTemplate>
+                <asp:Button runat="server"
+                    Text="Ver"
+                    CommandName="ver"
+                    CommandArgument='<%# Eval("RutaArchivo") %>'
+                    CssClass="btn btn-info btn-sm" />
+            </ItemTemplate>
+        </asp:TemplateField>
+
+        <asp:TemplateField HeaderText="Editar">
+            <ItemTemplate>
+                <asp:Button runat="server"
+                    Text="Editar"
+                    CommandName="editar"
+                    CommandArgument='<%# Eval("ProyectoID") %>'
+                    Visible='<%# Eval("NombreEstado").ToString()=="Pendiente" %>'
+                    CssClass="btn btn-warning btn-sm" />
+            </ItemTemplate>
+        </asp:TemplateField>
+
+        <asp:TemplateField HeaderText="Eliminar">
+            <ItemTemplate>
+                <asp:Button runat="server"
+                    Text="Eliminar"
+                    CommandName="eliminar"
+                    CommandArgument='<%# Eval("ProyectoID") %>'
+                    Visible='<%# Eval("NombreEstado").ToString()=="Pendiente" %>'
+                    CssClass="btn btn-danger btn-sm" />
+            </ItemTemplate>
+        </asp:TemplateField>
+
+    </Columns>
+
+</asp:GridView>
         </div>
     </div>
 </div>

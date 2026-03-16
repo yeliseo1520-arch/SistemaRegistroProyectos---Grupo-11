@@ -32,7 +32,7 @@ namespace SistemaRegistroProyectos
             {
                 // Hacemos la consulta SQL con parámetros
                 // Buscamos que coincida Correo, Contraseña y el Rol seleccionado
-                string query = "SELECT Nombres, Rol FROM Usuarios WHERE Correo = @Correo AND Contraseña = @Pass AND Rol = @Rol";
+                string query = "SELECT Nombres, Rol, EstudianteID FROM Usuarios WHERE Correo = @Correo AND Contraseña = @Pass AND Rol = @Rol";
 
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@Correo", txtUsuario.Text.Trim());
@@ -48,6 +48,7 @@ namespace SistemaRegistroProyectos
                     {
                         // Guardamos en Sesión
                         Session["Usuario"] = dr["Nombres"].ToString();
+                        Session["EstudianteID"] = dr["EstudianteID"].ToString();
                         Session["Rol"] = dr["Rol"].ToString();
 
                         // Redireccionamos según el rol

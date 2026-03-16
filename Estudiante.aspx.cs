@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace SistemaRegistroProyectos
 {
@@ -12,7 +13,16 @@ namespace SistemaRegistroProyectos
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["EstudianteID"] == null)
+            {
+                Response.Redirect("login.aspx");
+                return;
+            }
 
+            if (!IsPostBack)
+            {
+                CargarProyectos();
+            }
         }
 
         /////////////////////// CODIGO PARA BOTON DE REGISTRAR PROYECTO ////////////////////////
@@ -23,67 +33,220 @@ namespace SistemaRegistroProyectos
 
             int proyectoID = 0;
 
-            using (SqlConnection con = new SqlConnection(conexion))
+            ////////////////////////////// Para editar los proyectos del estudiante logeado/////////
+            if (Session["ProyectoEditar"] != null)
             {
-                con.Open();
-
-                SqlCommand cmd = new SqlCommand(@"
-                INSERT INTO Proyectos
-                (EstudianteID, NombreProyecto, TituloProyecto,
-                 DescripcionGeneral, ObjetivoGeneral,
-                 AreaID, TipoProyecto, EstadoID)
-                OUTPUT INSERTED.ProyectoID
-                VALUES
-                (@EstudianteID, @Nombre, @Titulo,
-                 @Descripcion, @Objetivo,
-                 @Area, @Tipo, 1)", con);
-
-                cmd.Parameters.AddWithValue("@EstudianteID", estudianteID);
-                cmd.Parameters.AddWithValue("@Nombre", txtNombreProyecto.Text);
-                cmd.Parameters.AddWithValue("@Titulo", txtTituloProyecto.Text);
-                cmd.Parameters.AddWithValue("@Descripcion", txtDescripcion.Text);
-                cmd.Parameters.AddWithValue("@Objetivo", txtObjetivo.Text);
-                cmd.Parameters.AddWithValue("@Area", ddlArea.SelectedValue);
-                cmd.Parameters.AddWithValue("@Tipo", ddlTipo.SelectedValue);
-
-                proyectoID = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-
-            /////////////////////// CODIGO PARA SUBIR DOCUMENTO ////////////////////////
-
-            if (fileInicial.HasFile)
-            {
-                string carpeta = Server.MapPath("~/Documentos/");
-
-                if (!Directory.Exists(carpeta))
-                    Directory.CreateDirectory(carpeta);
-
-                string nombre = Guid.NewGuid().ToString() +
-                                Path.GetExtension(fileInicial.FileName);
-
-                string rutaFisica = carpeta + nombre;
-
-                fileInicial.SaveAs(rutaFisica);
+                int id = Convert.ToInt32(Session["ProyectoEditar"]);
 
                 using (SqlConnection con = new SqlConnection(conexion))
                 {
                     con.Open();
 
                     SqlCommand cmd = new SqlCommand(@"
-                    INSERT INTO DocumentosProyecto
-                    (ProyectoID, NombreArchivo, RutaArchivo)
-                    VALUES
-                    (@ProyectoID, @Nombre, @Ruta)", con);
+            UPDATE Proyectos SET
+                NombreProyecto = @Nombre,
+                TituloProyecto = @Titulo,
+                Descripcion = @Descripcion,
+                Objetivo = @Objetivo,
+                AreaID = @Area,
+                Tipo = @Tipo
+            WHERE ProyectoID = @id", con);
 
-                    cmd.Parameters.AddWithValue("@ProyectoID", proyectoID);
-                    cmd.Parameters.AddWithValue("@Nombre", fileInicial.FileName);
-                    cmd.Parameters.AddWithValue("@Ruta", "~/Documentos/" + nombre);
+                    cmd.Parameters.AddWithValue("@Nombre", txtNombreProyecto.Text);
+                    cmd.Parameters.AddWithValue("@Titulo", txtTituloProyecto.Text);
+                    cmd.Parameters.AddWithValue("@Descripcion", txtDescripcion.Text);
+                    cmd.Parameters.AddWithValue("@Objetivo", txtObjetivo.Text);
+                    cmd.Parameters.AddWithValue("@Area", ddlArea.SelectedValue);
+                    cmd.Parameters.AddWithValue("@Tipo", ddlTipo.SelectedValue);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
                 }
+
+                Session.Remove("ProyectoEditar");
+
+                btnEnviar.Text = "Registrar Proyecto";
+
+                Response.Write("<script>alert('Proyecto actualizado correctamente');</script>");
+            }
+            else
+            {
+                ///////////////Si no actualiza, lo inserta a la base/////////////
+
+                using (SqlConnection con = new SqlConnection(conexion))
+                {
+                    con.Open();
+
+                    SqlCommand cmd = new SqlCommand(@"
+            INSERT INTO Proyectos
+            (EstudianteID, NombreProyecto, TituloProyecto,
+             Descripcion, Objetivo,
+             AreaID, Tipo, EstadoID)
+            OUTPUT INSERTED.ProyectoID
+            VALUES
+            (@EstudianteID, @Nombre, @Titulo,
+             @Descripcion, @Objetivo,
+             @Area, @Tipo, 1)", con);
+
+                    cmd.Parameters.AddWithValue("@EstudianteID", estudianteID);
+                    cmd.Parameters.AddWithValue("@Nombre", txtNombreProyecto.Text);
+                    cmd.Parameters.AddWithValue("@Titulo", txtTituloProyecto.Text);
+                    cmd.Parameters.AddWithValue("@Descripcion", txtDescripcion.Text);
+                    cmd.Parameters.AddWithValue("@Objetivo", txtObjetivo.Text);
+                    cmd.Parameters.AddWithValue("@Area", ddlArea.SelectedValue);
+                    cmd.Parameters.AddWithValue("@Tipo", ddlTipo.SelectedValue);
+
+                    proyectoID = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+
+                ///////////Para subir el documento adjunto al proyecto////
+
+                if (fileInicial.HasFile)
+                {
+                    string carpeta = Server.MapPath("~/Documentos/");
+
+                    if (!Directory.Exists(carpeta))
+                        Directory.CreateDirectory(carpeta);
+
+                    string nombre = Guid.NewGuid().ToString() +
+                                    Path.GetExtension(fileInicial.FileName);
+
+                    string rutaFisica = carpeta + nombre;
+
+                    fileInicial.SaveAs(rutaFisica);
+
+                    using (SqlConnection con = new SqlConnection(conexion))
+                    {
+                        con.Open();
+
+                        SqlCommand cmd = new SqlCommand(@"
+                INSERT INTO DocumentosProyecto
+                (ProyectoID, NombreArchivo, RutaArchivo)
+                VALUES
+                (@ProyectoID, @Nombre, @Ruta)", con);
+
+                        cmd.Parameters.AddWithValue("@ProyectoID", proyectoID);
+                        cmd.Parameters.AddWithValue("@Nombre", fileInicial.FileName);
+                        cmd.Parameters.AddWithValue("@Ruta", "~/Documentos/" + nombre);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                Response.Write("<script>alert('Proyecto registrado correctamente');</script>");
             }
 
-            Response.Write("<script>alert('Proyecto registrado correctamente');</script>");
+            //////////////////Para dejar campos en limpio//////////
+
+            txtNombreProyecto.Text = "";
+            txtTituloProyecto.Text = "";
+            txtDescripcion.Text = "";
+            txtObjetivo.Text = "";
+            ddlArea.SelectedIndex = 0;
+            ddlTipo.SelectedIndex = 0;
+
+            CargarProyectos();
+        }
+
+        void CargarProyectos()
+        {
+            int estudianteID = Convert.ToInt32(Session["EstudianteID"]);
+
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(@"
+                SELECT 
+                    p.ProyectoID,
+                    p.NombreProyecto,
+                    e.Nombre AS NombreEstado,
+                    p.FechaEnvio,
+                    ISNULL(o.Comentario,'Sin observaciones') AS Observacion,
+                    d.RutaArchivo
+                FROM Proyectos p
+                INNER JOIN EstadosProyecto e ON p.EstadoID = e.EstadoID
+                LEFT JOIN Observaciones o ON p.ProyectoID = o.ProyectoID
+                LEFT JOIN DocumentosProyecto d ON p.ProyectoID = d.ProyectoID
+                    WHERE p.EstudianteID = @id
+                ORDER BY p.FechaEnvio desc", con);
+
+                cmd.Parameters.AddWithValue("@id", estudianteID);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                gvProyectos.DataSource = dr;
+                gvProyectos.DataBind();
+            }
+        }
+        protected void gvProyectos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ver")
+            {
+                string ruta = e.CommandArgument.ToString();
+                Response.Redirect(ruta);
+            }
+
+            if (e.CommandName == "eliminar")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+
+                using (SqlConnection con = new SqlConnection(conexion))
+                {
+                    con.Open();
+
+                    SqlCommand cmd1 = new SqlCommand(
+                        "DELETE FROM DocumentosProyecto WHERE ProyectoID=@id", con);
+                    cmd1.Parameters.AddWithValue("@id", id);
+                    cmd1.ExecuteNonQuery();
+
+                    SqlCommand cmd2 = new SqlCommand(
+                        "DELETE FROM Proyectos WHERE ProyectoID=@id", con);
+                    cmd2.Parameters.AddWithValue("@id", id);
+                    cmd2.ExecuteNonQuery();
+                }
+
+                CargarProyectos();
+            }
+
+            if (e.CommandName == "editar")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+
+                Session["ProyectoEditar"] = id;
+
+                EditarProyecto(id);
+            }
+        }
+        void EditarProyecto(int id)
+        {
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(@"
+                SELECT NombreProyecto,TituloProyecto,
+                       Descripcion,Objetivo,
+                       AreaID,Tipo
+                FROM Proyectos
+                WHERE ProyectoID=@id", con);
+
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    txtNombreProyecto.Text = dr["NombreProyecto"].ToString();
+                    txtTituloProyecto.Text = dr["TituloProyecto"].ToString();
+                    txtDescripcion.Text = dr["Descripcion"].ToString();
+                    txtObjetivo.Text = dr["Objetivo"].ToString();
+                    ddlArea.SelectedValue = dr["AreaID"].ToString();
+                    ddlTipo.SelectedValue = dr["Tipo"].ToString();
+                }
+            }
+
+            btnEnviar.Text = "Actualizar Proyecto";
         }
     }
 }
