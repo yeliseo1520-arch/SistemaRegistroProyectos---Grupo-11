@@ -217,6 +217,11 @@ namespace SistemaRegistroProyectos
 
                 EditarProyecto(id);
             }
+            if (e.CommandName == "comentario")
+            {
+                lblComentario.Text = e.CommandArgument.ToString();
+                pnlComentario.Visible = true;
+            }
         }
         void EditarProyecto(int id)
         {
@@ -247,6 +252,30 @@ namespace SistemaRegistroProyectos
             }
 
             btnEnviar.Text = "Actualizar Proyecto";
+        }
+        protected void gvProyectos_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                string estado = DataBinder.Eval(e.Row.DataItem, "NombreEstado").ToString();
+
+                if (estado == "Pendiente")
+                {
+                    e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#fff9c4"); // amarillo pastel
+                }
+                else if (estado == "Aprobado")
+                {
+                    e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#c8e6c9"); // verde pastel
+                }
+                else if (estado == "Rechazado")
+                {
+                    e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#ffcdd2"); // rojo pastel
+                }
+            }
+        }
+        protected void btnCerrarPopup_Click(object sender, EventArgs e)
+        {
+            pnlComentario.Visible = false;
         }
     }
 }
