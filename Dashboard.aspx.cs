@@ -13,5 +13,17 @@ namespace SistemaRegistroProyectos
         {
 
         }
+        
+        //aca agrego esto para que cuando haga clic a la tarjeta de buscar proyecto muestre el panelBuscador AR-ALXRM
+        protected void btnMostrarBuscador_Click(object sender, EventArgs e)
+        {
+            panelBuscador.Visible = true;
+        }
+
+        // aca agrego esto para que cuando haga clic al boton buscar del panelBuscador muestre el resultado de la busqueda AR-ALXRM
+        protected void btnBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
