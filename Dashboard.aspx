@@ -109,6 +109,23 @@
     </asp:TextBox>
 
     <br />
+    <%-- aca modifico para poder filtrar por nombre, estado o combianrlos AR-ALXRM --%>
+<label>Filtrar por Estado</label>
+
+<asp:DropDownList 
+    ID="ddlEstadoFiltro" 
+    runat="server" 
+    CssClass="form-control">
+
+    <asp:ListItem Text="Todos" Value=""></asp:ListItem>
+    <asp:ListItem Text="Pendiente" Value="Pendiente"></asp:ListItem>
+    <asp:ListItem Text="En revisión" Value="En revisión"></asp:ListItem>
+    <asp:ListItem Text="Aprobado" Value="Aprobado"></asp:ListItem>
+    <asp:ListItem Text="Rechazado" Value="Rechazado"></asp:ListItem>
+
+</asp:DropDownList>
+
+    <br />
 
     <asp:Button 
         ID="btnBuscar" 
