@@ -22,3 +22,29 @@
         background-color: #48a8a6 !important;
         transform: translateY(-1px);
     }
+
+
+/* ── Info cards del modal ── */
+.info-card {
+    background: #f8fffe;
+    border: 1px solid #d0f0ed;
+    border-left: 4px solid #5bc0be;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.info-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #3d9a8b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 0.95rem;
+    color: #2d2d2d;
+}
