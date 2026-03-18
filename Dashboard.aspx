@@ -40,12 +40,17 @@
 
             </div>
         </div>
+<%--            aca pondre labels para que pueda tomar del servidor la cantidad de cada proyecto y no sea un dato estatico AR-ALXRM--%>
     </div>
         <div class="col-md-4">
             <div class="card card-menu info-card">
                 <div class="card-body">
                     <h6 class="text-muted">Proyectos Creados</h6>
-                    <h2 class="display-6">15</h2>
+                   <asp:Label 
+                        ID="lblCreados" 
+                        runat="server" 
+                        CssClass="display-6">
+                   </asp:Label>
                 </div>
             </div>
         </div>
@@ -53,7 +58,11 @@
             <div class="card card-menu info-card border-turquesa">
                 <div class="card-body">
                     <h6 class="text-muted">Proyectos Activos</h6>
-                    <h2 class="display-6 text-prometeo">8</h2>
+                    <asp:Label 
+                        ID="lblActivos" 
+                        runat="server" 
+                        CssClass="display-6 text-prometeo">
+                    </asp:Label>
                 </div>
             </div>
         </div>
@@ -61,7 +70,11 @@
             <div class="card card-menu info-card border-warning">
                 <div class="card-body">
                     <h6 class="text-muted">Proyectos Pendientes</h6>
-                    <h2 class="display-6 text-warning">4</h2>
+                    <asp:Label 
+                        ID="lblPendientes" 
+                        runat="server" 
+                        CssClass="display-6 text-warning">
+                    </asp:Label>
                 </div>
             </div>
         </div>
@@ -70,7 +83,11 @@
             <div class="card card-menu info-card border-success">
                 <div class="card-body">
                     <h6 class="text-muted">Proyectos Aprobados</h6>
-                    <h2 class="display-6 text-success">10</h2>
+                    <asp:Label 
+                        ID="lblAprobados" 
+                        runat="server" 
+                        CssClass="display-6 text-success">
+                    </asp:Label>
                 </div>
             </div>
         </div>
@@ -78,7 +95,11 @@
             <div class="card card-menu info-card border-danger">
                 <div class="card-body">
                     <h6 class="text-muted">Proyectos Rechazados</h6>
-                    <h2 class="display-6 text-danger">3</h2>
+                    <asp:Label 
+                        ID="lblRechazados" 
+                        runat="server" 
+                        CssClass="display-6 text-danger">
+                    </asp:Label>
                 </div>
             </div>
         </div>
@@ -86,7 +107,11 @@
             <div class="card card-menu total-card">
                 <div class="card-body text-white">
                     <h6>Total de Proyectos</h6>
-                    <h2 class="display-5">40</h2>
+                    <asp:Label 
+                        ID="lblTotal" 
+                        runat="server" 
+                        CssClass="display-5">
+                    </asp:Label>
                 </div>
             </div>
         </div>

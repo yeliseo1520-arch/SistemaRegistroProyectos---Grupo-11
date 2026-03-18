@@ -19,10 +19,46 @@ namespace SistemaRegistroProyectos
              
             if (!IsPostBack)
             {
-
+                CargarEstadisticas();
             }
         }
-        
+
+        void CargarEstadisticas()
+        {
+            string connString = ConfigurationManager.ConnectionStrings["PrometeoConnectionString"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                string query = @"
+        SELECT
+        COUNT(*) AS Creados,
+        COUNT(*) AS Total,
+        SUM(CASE WHEN E.Nombre = 'Pendiente' THEN 1 ELSE 0 END) AS Pendientes,
+        SUM(CASE WHEN E.Nombre = 'Aprobado' THEN 1 ELSE 0 END) AS Aprobados,
+        SUM(CASE WHEN E.Nombre = 'Rechazado' THEN 1 ELSE 0 END) AS Rechazados,
+        SUM(CASE WHEN E.Nombre = 'En revisión' THEN 1 ELSE 0 END) AS Activos
+        FROM Proyectos P
+        INNER JOIN EstadosProyecto E
+        ON P.EstadoID = E.EstadoID";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    lblCreados.Text = reader["Creados"].ToString();
+                    lblTotal.Text = reader["Total"].ToString();
+                    lblPendientes.Text = reader["Pendientes"].ToString();
+                    lblAprobados.Text = reader["Aprobados"].ToString();
+                    lblRechazados.Text = reader["Rechazados"].ToString();
+                    lblActivos.Text = reader["Activos"].ToString();
+                }
+            }
+        }
+
         //aca agrego esto para que cuando haga clic a la tarjeta de buscar proyecto muestre el panelBuscador AR-ALXRM
         protected void btnMostrarBuscador_Click(object sender, EventArgs e)
         {
@@ -70,7 +106,7 @@ namespace SistemaRegistroProyectos
 
                 gvBusquedaProyectos.DataSource = dt;
                 gvBusquedaProyectos.DataBind();
-                //Para que la pagina baje de un solo cuando busque AR-ALXRM
+                //Para que la pagina baje de un solo cuando busque un proyecto AR-ALXRM
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "scroll", "location.hash='#buscador';", true);
             }
         }
