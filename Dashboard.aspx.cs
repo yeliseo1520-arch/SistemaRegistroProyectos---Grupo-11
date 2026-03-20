@@ -77,7 +77,7 @@ namespace SistemaRegistroProyectos
                     P.ProyectoID,
                     P.NombreProyecto,
                     P.TituloProyecto,
-                    CONCAT(ES.Nombres,' ',ES.Apellidos) AS Estudiante,
+                    (U.Nombres + ' ' + U.Apellidos) AS Estudiante, -- Cambio aquí
                     E.Nombre AS Estado,
                     CASE 
                         WHEN P.Tipo = 'I' THEN 'Individual'
@@ -85,14 +85,12 @@ namespace SistemaRegistroProyectos
                     END AS TipoProyecto,
                     D.NombreArchivo
                     FROM Proyectos P
-                    INNER JOIN EstadosProyecto E 
-                        ON P.EstadoID = E.EstadoID
-                    INNER JOIN Estudiantes ES
-                        ON P.EstudianteID = ES.EstudianteID
-                    LEFT JOIN DocumentosProyecto D
-                        ON P.ProyectoID = D.ProyectoID
+                    INNER JOIN EstadosProyecto E ON P.EstadoID = E.EstadoID
+                    INNER JOIN Usuarios U ON P.UsuarioID = U.UsuarioID -- Cambio de JOIN aquí
+                    LEFT JOIN DocumentosProyecto D ON P.ProyectoID = D.ProyectoID
                     WHERE (P.NombreProyecto LIKE @nombre OR @nombre = '')
                     AND (E.Nombre = @estado OR @estado = '')";
+
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
