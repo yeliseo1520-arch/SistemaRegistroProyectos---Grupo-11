@@ -37,17 +37,6 @@ CREATE TABLE Carreras (
     Nombre VARCHAR(150)
 );
 
-CREATE TABLE Estudiantes (
-    EstudianteID INT IDENTITY PRIMARY KEY,
-    UsuarioID INT UNIQUE,
-    Nombres VARCHAR(100),
-    Apellidos VARCHAR(100),
-    Carnet VARCHAR(20),
-    CarreraID INT,
-    CicloID INT,
-    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID)
-);
-
 CREATE TABLE AreasInvestigacion (
     AreaID INT IDENTITY PRIMARY KEY,
     Nombre VARCHAR(100)
@@ -60,7 +49,7 @@ CREATE TABLE EstadosProyecto (
 
 CREATE TABLE Proyectos (
     ProyectoID INT IDENTITY PRIMARY KEY,
-    EstudianteID INT,
+    UsuarioID INT,
     NombreProyecto VARCHAR(200),
     TituloProyecto VARCHAR(300),
     Descripcion TEXT,
@@ -69,7 +58,7 @@ CREATE TABLE Proyectos (
     Tipo CHAR(1),
     EstadoID INT,
     FechaEnvio DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (EstudianteID) REFERENCES Estudiantes(EstudianteID),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID),
     FOREIGN KEY (AreaID) REFERENCES AreasInvestigacion(AreaID),
     FOREIGN KEY (EstadoID) REFERENCES EstadosProyecto(EstadoID)
 );
@@ -92,9 +81,6 @@ CREATE TABLE Observaciones (
 );
 
 -- AGREGAMOS UN ADMIN DE PRUEBA (Para podernos loguear)
-INSERT INTO Estudiantes (UsuarioID,Nombres,Apellidos,Carnet,CarreraID,CicloID)
-VALUES (1,'Paco','Flores','1212341234',1,1)
-
 INSERT INTO Usuarios (Nombres, Apellidos, Correo, Contraseña, Rol, EstudianteID)
 VALUES ('Admin', 'General', 'admin@mail.utec.edu.sv', '123456', 'Administrador',1);
 
