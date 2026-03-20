@@ -1,51 +1,77 @@
-# Sistema de Registro de Proyectos - Grupo 11
+# Sistema de Registro de Proyectos - PROMETEO (Grupo 11)
 
-Este repositorio contiene el código fuente del Sistema de Registro de Proyectos, desarrollado en C# utilizando ASP.NET Web Forms y la implementación de la interfaz administrativa, la lógica de seguridad por roles y la gestión de usuarios del Sistema de Registro de Proyectos de Grado. 
+Esta solución integral para el **Sistema de Registro de Proyectos de Grado** ha sido desarrollada como parte de la **Unidad 2** de la materia Programación II. El sistema permite la gestión dinámica de propuestas académicas, integrando una arquitectura robusta de persistencia de datos y seguridad por roles.
 
-## Requisitos previos del entorno
-Para asegurar la correcta ejecución de la plataforma, el entorno debe contar con:
-* **IDE:** Visual Studio 2022.
-* **Framework:** .NET Framework 4.8.1 (incluyendo el SDK).
-* **SQL Server** (LocalDB o Express).
-* **SQL Server Management Studio (SSMS)**.
+---
 
-## Instrucciones de Ejecución para Evaluación
-Dado que el archivo `.gitignore` omite los binarios y paquetes locales para optimizar el repositorio, por favor siga estos pasos para ejecutar el proyecto de forma local:
+##  Tecnologías y Requisitos
+*   **Lenguaje:** C# (.NET Framework 4.8.1)
+*   **Base de Datos:** SQL Server (LocalDB / Express)
+*   **Tecnología de Datos:** ADO.NET (Modelo Conectado y Desconectado)
+*   **Diseño:** Bootstrap 5, CSS3, Google Fonts e Iconos de Bootstrap
+*   **IDE:** Visual Studio 2022
+*   **Gestor de BD:** SQL Server Management Studio (SSMS)
 
-1. **Clonar o descargar:** Clone este repositorio o descargue el archivo ZIP y ábralo en Visual Studio 2022 utilizando el archivo `.sln`.
-2. **Restaurar dependencias:** Al abrir el proyecto, vaya a la pestaña *Compilar* > *Recompilar solución*. Esto forzará la restauración de los paquetes de NuGet.
-   * *Nota técnica:* Si el servidor IIS Express arroja un error relacionado con `roslyn\csc.exe`, abra la Consola del Administrador de paquetes NuGet e ingrese el siguiente comando para regenerar el compilador: 
-     `Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -Reinstall`
-3. **Página de inicio:** En el *Explorador de soluciones*, haga clic derecho sobre el archivo principal (por ejemplo, `Login.aspx`) y seleccione **"Establecer como página de inicio"**.
-4. **Ejecutar:** Presione `F5` o el botón de Iniciar (IIS Express) para compilar y lanzar la aplicación en su navegador web.
+---
 
-## Instrucciones de Configuración y Despliegue
+##  Instrucciones de Ejecución para Evaluación
 
-### 1. Preparación de la Base de Datos
-Para que el sistema funcione, es necesario crear la estructura de datos:
-1.  Localice el archivo en la carpeta: `/Database/Script_Prometeo.sql`.
-2.  Abra el archivo en **SSMS**.
-3.  Ejecute el script completo. Esto creará la base de datos `SistemaPrometeo`, las tablas `Usuarios` y `Ciclos`, e insertará un usuario administrador de prueba.
+Para garantizar que el proyecto funcione correctamente en su entorno local, siga estos pasos:
 
-### 2. Configuración de la Conexión (Web.config)
-El proyecto está configurado para buscar el servidor local mediante el punto (`.`). 
-Si su instancia de SQL Server tiene un nombre específico (ej: `.\SQLEXPRESS`), siga estos pasos:
-1.  Abra el archivo `Web.config`.
-2.  Busque la sección `<connectionStrings>`.
-3.  Ajuste el atributo `Data Source` según su configuración:
-    *   `Data Source=.;` (Estándar local)
-    *   `Data Source=.\SQLEXPRESS;` (Instancia Express)
+1.  **Clonación:** Clone este repositorio en su máquina local.
+2.  **Restaurar Dependencias:** Al abrir la solución en Visual Studio, vaya a la pestaña **Compilar > Recompilar solución**. Esto forzará la restauración de los paquetes de NuGet.
+3.  **Nota Técnica (Error de Compilador):** Si el servidor IIS Express arroja un error relacionado con `roslyn\csc.exe`, abra la **Consola del Administrador de paquetes NuGet** e ingrese el siguiente comando:
+    `Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -Reinstall`
+4.  **Página de Inicio:** En el Explorador de Soluciones, haga clic derecho sobre `Login.aspx` y seleccione **"Establecer como página de inicio"**.
+5.  **Ejecutar:** Presione **F5** para iniciar la aplicación en su navegador.
 
-### 3. Credenciales de Acceso (Prueba)
-Para probar el módulo administrativo, ingrese en `Login.aspx` con las siguientes credenciales:
-*   **Correo:** `admin@mail.utec.edu.sv`
-*   **Contraseña:** `123456`
-*   **Perfil:** Seleccione "Admin" en el menú desplegable.
+---
 
-## Autores
-* **RODRÍGUEZ RAMÍREZ, YONATAN ELISEO** - 29-4119-2024
-* **ROMERO ROMERO, JOSÉ ALEXANDER** - 29-4322-2024
-* **RUANO RICO, DAVID EDUARDO** - 29-5117-2016
-* **SALAS ROGEL, JORGE ALBERTO** - 29-0377-2023
-* **SANCHEZ HERNANDEZ, ROBERTO ALFREDO** - 29-5057-2019
-  
+##  Configuración de la Base de Datos
+
+El sistema utiliza un modelo relacional normalizado para garantizar la integridad de la información.
+
+1.  **Preparación de los Datos:** Localice el archivo en la ruta `/Database/Script_Prometeo.sql`.
+2.  **Ejecución:** Abra el archivo en **SSMS** y ejecute el script completo. 
+    *   *Este comando creará la base de datos `SistemaPrometeo`, las tablas necesarias e insertará los catálogos maestros (Carreras, Ciclos, Estados) y usuarios de prueba.*
+3.  **Cadena de Conexión (Web.config):** El proyecto está configurado para buscar el servidor local mediante el punto (`.`). 
+    ```xml
+    <add name="PrometeoConnectionString" connectionString="Data Source=.;Initial Catalog=SistemaPrometeo;Integrated Security=True;..." />
+    ```
+    *Si su instancia local tiene un nombre específico (ej: `.\SQLEXPRESS`), favor ajustarlo en la sección `<connectionStrings>` del archivo `Web.config`.*
+
+---
+
+##  Credenciales de Prueba para Evaluación
+
+Utilice las siguientes cuentas para validar el control de acceso y las funcionalidades por perfil:
+
+| Perfil | Correo Electrónico | Contraseña |
+| :--- | :--- | :--- |
+| **Administrador** | `admin@mail.utec.edu.sv` | `123456` |
+| **Estudiante** | *(Registrar nuevo en módulo Admin)* | `Utec123` |
+| **Docente** | *(Registrar nuevo en módulo Admin)* | `Utec123` |
+
+---
+
+## Funcionalidades Implementadas (Unidad 2)
+
+*   **Persistencia Real con ADO.NET:** Implementación de operaciones CRUD (Crear, Leer, Actualizar, Eliminar) utilizando `SqlDataSource` y comandos manuales con `SqlDataAdapter` y `DataTable`.
+*   **Gestión de Sesiones (State Management):** Uso de variables de `Session` para persistir la identidad del usuario y su ID de perfil a través de las diferentes páginas del sitio.
+*   **Seguridad por Roles (RBAC):** Protección de rutas en el servidor y personalización dinámica del menú en la **Master Page** según el rol del usuario autenticado.
+*   **Paneles Dinámicos y Validaciones:** Formularios inteligentes que se adaptan al rol seleccionado y validan la integridad de los datos mediante `RequiredFieldValidator` y `RegularExpressionValidator`.
+*   **Motor de Búsqueda:** Dashboard con filtros dinámicos que combinan parámetros de texto y estado del proyecto.
+*   **Integridad Referencial:** Lógica de negocio avanzada que maneja el borrado en cascada de dependencias (Observaciones y Documentos) antes de eliminar registros principales.
+
+---
+
+##  Autores - Grupo 11
+
+*   **RODRÍGUEZ RAMÍREZ, YONATAN ELISEO** - 29-4119-2024
+*   **ROMERO ROMERO, JOSÉ ALEXANDER** - 29-4322-2024
+*   **RUANO RICO, DAVID EDUARDO** - 29-5117-2016
+*   **SALAS ROGEL, JORGE ALBERTO** - 29-0377-2023
+*   **SANCHEZ HERNANDEZ, ROBERTO ALFREDO** - 29-5057-2019
+
+---
+*Este proyecto pertenece a la cátedra de **Programación II**, Facultad de Informática y Ciencias Aplicadas - UTEC.*
