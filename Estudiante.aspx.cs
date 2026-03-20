@@ -195,6 +195,11 @@ namespace SistemaRegistroProyectos
                 {
                     con.Open();
 
+                    SqlCommand cmd0 = new SqlCommand(
+                        "DELETE FROM Observaciones WHERE ProyectoID=@id", con);
+                    cmd0.Parameters.AddWithValue("@id", id);
+                    cmd0.ExecuteNonQuery();
+
                     SqlCommand cmd1 = new SqlCommand(
                         "DELETE FROM DocumentosProyecto WHERE ProyectoID=@id", con);
                     cmd1.Parameters.AddWithValue("@id", id);
