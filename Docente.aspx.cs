@@ -24,19 +24,18 @@ namespace SistemaRegistroProyectos
             string connStr = ConfigurationManager.ConnectionStrings["PrometeoConnectionString"].ConnectionString;
 
             string query = @"
-                SELECT 
-        p.ProyectoID,
-        p.TituloProyecto,
-        p.Descripcion,
-        p.EstadoID,
-        e.Nombres + ' ' + e.Apellidos  AS Autor,
-        ep.Nombre                       AS Estado,
-        d.NombreArchivo
-    FROM Proyectos p
-    INNER JOIN Estudiantes    est ON p.EstudianteID = est.EstudianteID
-    INNER JOIN Usuarios        e  ON est.UsuarioID  = e.UsuarioID
-    INNER JOIN EstadosProyecto ep ON p.EstadoID     = ep.EstadoID
-    LEFT  JOIN DocumentosProyecto d ON p.ProyectoID = d.ProyectoID";
+        SELECT 
+            p.ProyectoID,
+            p.TituloProyecto,
+            p.Descripcion,
+            p.EstadoID,
+            u.Nombres + ' ' + u.Apellidos  AS Autor, -- Buscamos el nombre directamente en Usuarios
+            ep.Nombre                      AS Estado,
+            d.NombreArchivo
+        FROM Proyectos p
+        INNER JOIN Usuarios        u  ON p.UsuarioID  = u.UsuarioID -- Unión directa Proyectos -> Usuarios
+        INNER JOIN EstadosProyecto ep ON p.EstadoID     = ep.EstadoID
+        LEFT  JOIN DocumentosProyecto d ON p.ProyectoID = d.ProyectoID";
 
             using (SqlConnection conn = new SqlConnection(connStr))
             using (SqlDataAdapter da = new SqlDataAdapter(query, conn))
